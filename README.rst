@@ -8,8 +8,9 @@ Getting started
 ---------------
 
 1. ``pip install hg+http://bitbucket.org/pygame/pygame``
-1. ``pip install banjo``
-2. ``banjo``
+2. ``pip install banjo``
+3. ``banjo --help``
+4. ``banjo``
 
 
 Instructions
