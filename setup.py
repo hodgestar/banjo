@@ -12,8 +12,9 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        'pygame'
+        'pygame',
         'wiring',
+        'click',
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
