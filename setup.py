@@ -16,6 +16,10 @@ setup(
         'wiring',
         'click',
     ],
+    entry_points='''
+        [console_scripts]
+        banjo=banjo.scripts.banjo:cli
+    ''',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
