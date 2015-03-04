@@ -52,23 +52,24 @@ class Engine(object):
     def teardown(self):
         pass
 
-    def run(self):
+    def run(self, scene, gamestate):
         clock = pygame.time.Clock()
         while True:
-            events = pygame.event.get()
-            for ev in events:
+            pygame_events = pygame.event.get()
+            scene, scene_events = scene.update(gamestate, pygame_events)
+            gamestate = gamestate.apply_events(scene_events)
+            # music = music.apply_events(scene_events)
+            surface = pygame.display.get_surface()
+            scene.render(gamestate, surface)
+
+            # TODO: replace this with a scene event
+            for ev in pygame_events:
                 if ev.type == pygame.locals.QUIT:
                     return
                 elif ev.type == pygame.locals.KEYDOWN:
                     if ev.key == pygame.locals.K_ESCAPE:
                         return
-            # TODO: construct scene
-            # TODO: render scene
-            #    scene is a list of renderable events
-            #    event types:
-            #        render on surface
-            #        play sound
-            #        emit pygame event
-            #    surface = pygame.display.get_surface()
+
             pygame.display.flip()
+            # TODO: store fps on the gamestate
             fps = 1000.0 / clock.tick(self.max_fps)
