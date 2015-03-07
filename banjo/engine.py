@@ -27,6 +27,8 @@ from __future__ import absolute_import
 import pygame
 import pygame.locals
 
+from banjo.music import Music
+
 
 class Engine(object):
     """ Banjo's game engine. """
@@ -52,17 +54,25 @@ class Engine(object):
     def teardown(self):
         pass
 
-    def run(self, scene, gamestate):
+    def run(self, scenes, start_scene_name, gamestate):
         clock = pygame.time.Clock()
+        music = Music()
+        scene = scenes.get_scene(start_scene_name)
         while True:
             pygame_events = pygame.event.get()
-            scene, scene_events = scene.update(gamestate, pygame_events)
-            gamestate = gamestate.apply_events(scene_events)
-            # music = music.apply_events(scene_events)
+
+            scene_events = scene.update(gamestate, pygame_events)
+            gamestate = scene_events.apply_state_events(gamestate)
+            music = scene_events.apply_music_events(music)
+            scene = scene_events.get_next_scene(scenes)
+
+            if scene_events.quit_game:
+                break
+
             surface = pygame.display.get_surface()
             scene.render(gamestate, surface)
 
-            # TODO: replace this with a scene event
+            # TODO: move this into a scene
             for ev in pygame_events:
                 if ev.type == pygame.locals.QUIT:
                     return
